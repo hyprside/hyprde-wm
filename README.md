@@ -1,143 +1,104 @@
 <div align = center>
 
-<img src="https://raw.githubusercontent.com/hyprwm/Hyprland/main/assets/header.svg" width="750" height="300" alt="banner">
 
-<br>
 
-[![Badge Workflow]][Workflow]
-[![Badge License]][License] 
-![Badge Language] 
-[![Badge Pull Requests]][Pull Requests] 
-[![Badge Issues]][Issues] 
-![Badge Hi Mom]<br>
+<br><br>
 
-<br>
+**hyprde-wm** is a heavily modified fork of **Hyprland**, designed to be the
+window management and compositing core of **HyprDE / Hyprside**.
 
-Hyprland is a 100% independent, dynamic tiling Wayland compositor that doesn't sacrifice on its looks.
+## This is **not** a general-purpose Wayland compositor.
+It is an **integrated system component**, tightly coupled with the Hyprside stack.
 
-It provides the latest Wayland features, is highly customizable, has all the eyecandy, the most powerful plugins,
-easy IPC, much more QoL stuff than other compositors and more...
-<br>
-<br>
+**This repository is intended for system developers, not end users.**
 
----
-
-**[<kbd> <br> Install <br> </kbd>][Install]** 
-**[<kbd> <br> Quick Start <br> </kbd>][Quick Start]** 
-**[<kbd> <br> Configure <br> </kbd>][Configure]** 
-**[<kbd> <br> Contribute <br> </kbd>][Contribute]**
-
----
 
 <br>
 
 </div>
 
-# Features
+# What is hyprde-wm?
 
-- All of the eyecandy: gradient borders, blur, animations, shadows and much more
-- A lot of customization
-- 100% independent, no wlroots, no libweston, no kwin, no mutter.
-- Custom bezier curves for the best animations
-- Powerful plugin support
-- Built-in plugin manager
-- Tearing support for better gaming performance
-- Easily expandable and readable codebase
-- Fast and active development
-- Not afraid to provide bleeding-edge features
-- Config reloaded instantly upon saving
-- Fully dynamic workspaces
-- Two built-in layouts and more available as plugins
-- Global keybinds passed to your apps of choice
-- Tiling/pseudotiling/floating/fullscreen windows
-- Special workspaces (scratchpads)
-- Window groups (tabbed mode)
-- Powerful window/monitor/layer rules
-- Socket-based IPC
-- Native IME and Input Panels Support
-- and much more...
+**hyprde-wm** is a fork of Hyprland adapted to act as:
 
-<br>
-<br>
+- The compositor core for **HyprDE**
+- A rendering client of [**Shift**](https://github.com/hyprside/shift), Hyprside’s graphical kernel and session manager
+- A tightly integrated subsystem rather than a standalone WM
 
-<div align = center>
+Unlike upstream Hyprland, this fork **does not aim to be modular, portable, or user-configurable via dotfiles**.
 
-# Gallery
+Instead, it prioritizes:
 
-<br>
-
-![Preview A]
-
-<br>
-
-![Preview B]
-
-<br>
-
-![Preview C]
-
-<br>
-<br>
-
-</div>
-
-# Special Thanks
-
-<br>
-
-**[wlroots]** - *For powering Hyprland in the past*
-
-**[tinywl]** - *For showing how 2 do stuff*
-
-**[Sway]** - *For showing how 2 do stuff the overkill way*
-
-**[Vivarium]** - *For showing how 2 do stuff the simple way*
-
-**[dwl]** - *For showing how 2 do stuff the hacky way*
-
-**[Wayfire]** - *For showing how 2 do some graphics stuff*
+- Deterministic behavior
+- Tight coupling with the shell
+- Centralized configuration
+- Predictable performance characteristics
 
 
-<!----------------------------------------------------------------------------->
+# Key Differences from Hyprland
 
-[Configure]: https://wiki.hypr.land/Configuring/
-[Stars]: https://starchart.cc/hyprwm/Hyprland
-[Hypr]: https://github.com/hyprwm/Hypr
+This fork intentionally diverges from upstream Hyprland in several ways:
 
-[Pull Requests]: https://github.com/hyprwm/Hyprland/pulls
-[Issues]: https://github.com/hyprwm/Hyprland/issues
-[Todo]: https://github.com/hyprwm/Hyprland/projects?type=beta
+### Architectural
+- Designed to run **under Shift**, not directly on DRM/KMS
+- Not designed to run standalone on arbitrary Linux setups
 
-[Contribute]: https://wiki.hypr.land/Contributing-and-Debugging/
-[Install]: https://wiki.hypr.land/Getting-Started/Installation/
-[Quick Start]: https://wiki.hypr.land/Getting-Started/Master-Tutorial/
-[Workflow]: https://github.com/hyprwm/Hyprland/actions/workflows/ci.yaml
-[License]: LICENSE
+### Configuration
+- No user-facing dotfile configuration
+- Runtime behavior is controlled by the shell and system services
+- Hyprlang dotfiles are completely deprecated and removed in favor of the **HyprRegistry**
+### Scope
+- No focus on plugin ecosystems
+- No built-in plugin manager
+- Features are added based on **Hyprside's requirements**, not general compositor use
 
-
-<!----------------------------------{ Thanks }--------------------------------->
-
-[Vivarium]: https://github.com/inclement/vivarium
-[WlRoots]: https://gitlab.freedesktop.org/wlroots/wlroots
-[Wayfire]: https://github.com/WayfireWM/wayfire
-[TinyWl]: https://gitlab.freedesktop.org/wlroots/wlroots/-/blob/master/tinywl/tinywl.c
-[Sway]: https://github.com/swaywm/sway
-[DWL]: https://codeberg.org/dwl/dwl
-
-<!----------------------------------{ Images }--------------------------------->
-
-[Preview A]: https://i.ibb.co/XxFY75Mk/greerggergerhtrytghjnyhjn.png
-[Preview B]: https://i.ibb.co/C1yTb0r/falf.png
-[Preview C]: https://i.ibb.co/2Yc4q835/hyprland-preview-b.png
+### Stability Model
+- Changes may break compatibility with upstream Hyprland
+- API and behavior may change without notice
+- No guarantee of upstream feature parity
 
 
-<!----------------------------------{ Badges }--------------------------------->
+# What stays from Hyprland
 
-[Badge Workflow]: https://github.com/hyprwm/Hyprland/actions/workflows/ci.yaml/badge.svg
+This fork still inherits much of what makes Hyprland great:
 
-[Badge Issues]: https://img.shields.io/github/issues/hyprwm/Hyprland
-[Badge Pull Requests]: https://img.shields.io/github/issues-pr/hyprwm/Hyprland
-[Badge Language]: https://img.shields.io/github/languages/top/hyprwm/Hyprland
-[Badge License]: https://img.shields.io/github/license/hyprwm/Hyprland
-[Badge Lines]: https://img.shields.io/tokei/lines/github/hyprwm/Hyprland
-[Badge Hi Mom]: https://img.shields.io/badge/Hi-mom!-ff69b4
+- Modern Wayland protocol support
+- High-performance rendering pipeline
+- Animation system and effects
+- Tiling / floating / fullscreen window management
+- Clean and readable C++ codebase
+
+Hyprland serves as the **foundation**, not the final product.
+
+
+# Intended Usage
+
+This repository is meant to be used **only** as part of:
+
+- **HyprDE**
+- **Hyprside OS**
+
+If you are looking for:
+- A configurable Wayland compositor
+- A desktop you can install on any distro
+
+➡️ **You want upstream Hyprland, not this fork.**
+
+
+
+# Credits & Acknowledgements
+
+
+Special thanks to:
+
+- **Hyprland** — original compositor and architecture. Making a wayland compositor from scratch is a real pain and Hyprland allowed me to headstart the development of the compositor.
+
+All original Hyprland credits apply to inherited code.
+
+
+
+
+# License
+
+This project is licensed under the **same license as Hyprland**.
+See the [LICENSE](LICENSE) file for details.
