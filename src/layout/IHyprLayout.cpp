@@ -564,6 +564,9 @@ void IHyprLayout::performSnap(Vector2D& sourcePos, Vector2D& sourceSize, PHLWIND
 }
 
 void IHyprLayout::onMouseMove(const Vector2D& mousePos) {
+    std::cout << "onmousemove called\n";
+    // print mousePos
+    std::cout << "Mouse Pos: " << mousePos.x << ", " << mousePos.y << std::endl;
     if (g_pInputManager->m_currentlyDraggedWindow.expired())
         return;
 
@@ -616,14 +619,15 @@ void IHyprLayout::onMouseMove(const Vector2D& mousePos) {
         canSkipUpdate = std::clamp(MSMONITOR - TIMERDELTA, 0.0, MSMONITOR) > totalMs * 1.0 / m_mouseMoveEventCount;
     }
 
-    if ((abs(TICKDELTA.x) < 1.f && abs(TICKDELTA.y) < 1.f) || (TIMERDELTA < MSMONITOR && canSkipUpdate && (g_pInputManager->m_dragMode != MBIND_MOVE || *PANIMATEMOUSE)))
-        return;
+    // if ((abs(TICKDELTA.x) < 0.02f && abs(TICKDELTA.y) < 0.02f) || (TIMERDELTA < MSMONITOR && canSkipUpdate && (g_pInputManager->m_dragMode != MBIND_MOVE || *PANIMATEMOUSE)))
+    //     return;
 
     TIMER = std::chrono::high_resolution_clock::now();
 
     m_lastDragXY = mousePos;
 
     g_pHyprRenderer->damageWindow(DRAGGINGWINDOW);
+    std::cout << "onmousemove before if\n";
 
     if (g_pInputManager->m_dragMode == MBIND_MOVE) {
 
@@ -720,6 +724,7 @@ void IHyprLayout::onMouseMove(const Vector2D& mousePos) {
             DRAGGINGWINDOW->m_size     = wb.size();
         } else {
             resizeActiveWindow(TICKDELTA, m_grabbedCorner, DRAGGINGWINDOW);
+            std::cout << "Resizing tiled window\n";
         }
     }
 

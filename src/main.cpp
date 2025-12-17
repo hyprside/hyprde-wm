@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     std::string configPath;
     std::string socketName;
     int         socketFd   = -1;
-    bool        ignoreSudo = false, verifyConfig = false, safeMode = false;
+    bool        ignoreSudo = true, verifyConfig = false, safeMode = false;
     int         watchdogFd = -1;
 
     if (argc > 1) {

@@ -43,6 +43,7 @@
 #include "render/OpenGL.hpp"
 
 #include <hyprutils/utils/ScopeGuard.hpp>
+#include <iostream>
 using namespace Hyprutils::Utils;
 using namespace Hyprutils::OS;
 using enum NContentType::eContentType;
@@ -2283,7 +2284,9 @@ bool CHyprRenderer::beginRender(PHLMONITOR pMonitor, CRegion& damage, eRenderMod
 
     if (!buffer) {
         m_currentBuffer = pMonitor->m_output->swapchain->next(&bufferAge);
+        std::cout << "HYPRLAND: Acquire buffer\n";
         if (!m_currentBuffer) {
+            std::cout << "ERROR HYPRLAND: Acquire buffer fail\n";
             Debug::log(ERR, "Failed to acquire swapchain buffer for {}", pMonitor->m_name);
             return false;
         }

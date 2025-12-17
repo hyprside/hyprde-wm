@@ -1,3 +1,20 @@
+
+class CCWlSurface;
+class CCXdgSurface;
+class CCXdgToplevel;
+class CCWlCallback;
+class CCWlKeyboard;
+class CCWlPointer;
+class CCWlRegistry;
+class CCWlSeat;
+class CCWlShm;
+class CCWlCompositor;
+class CCZwpLinuxDmabufFeedbackV1;
+class CCZwpLinuxDmabufV1;
+class CCXdgWmBase;
+class CCWlBuffer;
+#include <aquamarine/backend/Wayland.hpp>
+#include <aquamarine/backend/Headless.hpp>
 #include "HyprCtl.hpp"
 #include "helpers/Monitor.hpp"
 
@@ -57,7 +74,6 @@ using namespace Hyprutils::OS;
 #include "../debug/HyprNotificationOverlay.hpp"
 #include "../render/Renderer.hpp"
 #include "../render/OpenGL.hpp"
-
 #if defined(__DragonFly__) || defined(__FreeBSD__)
 #include <sys/ucred.h>
 #define CRED_T   xucred
@@ -1832,13 +1848,13 @@ static std::string dispatchOutput(eHyprCtlOutputFormat format, std::string reque
 
             if (type == Aquamarine::AQ_BACKEND_HEADLESS && (vars[2] == "headless" || vars[2] == "auto")) {
                 added = true;
-                impl->createOutput(vars[3]);
+                Hyprutils::Memory::dynamicPointerCast<Aquamarine::CHeadlessBackend>(impl)->createOutput(vars[3]);
                 break;
             }
 
             if (type == Aquamarine::AQ_BACKEND_WAYLAND && (vars[2] == "wayland" || vars[2] == "auto")) {
                 added = true;
-                impl->createOutput(vars[3]);
+                Hyprutils::Memory::dynamicPointerCast<Aquamarine::CWaylandBackend>(impl)->createOutput(vars[3]);
                 break;
             }
         }

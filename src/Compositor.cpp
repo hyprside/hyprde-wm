@@ -71,7 +71,7 @@
 
 #include <hyprutils/string/String.hpp>
 #include <aquamarine/input/Input.hpp>
-
+#include <aquamarine/backend/Headless.hpp>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -336,12 +336,17 @@ void CCompositor::initServer(std::string socketName, int socketFd) {
     option.backendType        = Aquamarine::eBackendType::AQ_BACKEND_HEADLESS;
     option.backendRequestMode = Aquamarine::eBackendRequestMode::AQ_BACKEND_REQUEST_MANDATORY;
     implementations.emplace_back(option);
-    option.backendType        = Aquamarine::eBackendType::AQ_BACKEND_DRM;
-    option.backendRequestMode = Aquamarine::eBackendRequestMode::AQ_BACKEND_REQUEST_IF_AVAILABLE;
+    if(getenv("SHIFT_SESSION_TOKEN")){
+        option.backendType        = Aquamarine::eBackendType::AQ_BACKEND_TAB;
+        option.backendRequestMode = Aquamarine::eBackendRequestMode::AQ_BACKEND_REQUEST_MANDATORY;
+    }else {
+        option.backendType        = Aquamarine::eBackendType::AQ_BACKEND_DRM;
+        option.backendRequestMode = Aquamarine::eBackendRequestMode::AQ_BACKEND_REQUEST_MANDATORY;
+    }
     implementations.emplace_back(option);
-    option.backendType        = Aquamarine::eBackendType::AQ_BACKEND_WAYLAND;
-    option.backendRequestMode = Aquamarine::eBackendRequestMode::AQ_BACKEND_REQUEST_FALLBACK;
-    implementations.emplace_back(option);
+    // option.backendType        = Aquamarine::eBackendType::AQ_BACKEND_WAYLAND;
+    // option.backendRequestMode = Aquamarine::eBackendRequestMode::AQ_BACKEND_REQUEST_FALLBACK;
+    // implementations.emplace_back(option);
 
     m_aqBackend = CBackend::create(implementations, options);
 
@@ -746,10 +751,10 @@ void CCompositor::removeLockFile() {
 
 void CCompositor::prepareFallbackOutput() {
     // create a backup monitor
-    SP<Aquamarine::IBackendImplementation> headless;
+    SP<Aquamarine::CHeadlessBackend> headless;
     for (auto const& impl : m_aqBackend->getImplementations()) {
         if (impl->type() == Aquamarine::AQ_BACKEND_HEADLESS) {
-            headless = impl;
+            headless = Hyprutils::Memory::dynamicPointerCast<Aquamarine::CHeadlessBackend>(impl);
             break;
         }
     }
@@ -758,7 +763,7 @@ void CCompositor::prepareFallbackOutput() {
         Debug::log(WARN, "No headless in prepareFallbackOutput?!");
         return;
     }
-
+    
     headless->createOutput();
 
     if (m_monitors.empty())

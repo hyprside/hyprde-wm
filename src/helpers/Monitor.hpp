@@ -127,7 +127,7 @@ class CMonitor {
     Mat3x3                      m_projMatrix;
     std::optional<Vector2D>     m_forceSize;
     SP<Aquamarine::SOutputMode> m_currentMode;
-    SP<Aquamarine::CSwapchain>  m_cursorSwapchain;
+    SP<Aquamarine::CLegacySwapchain>  m_cursorSwapchain;
     uint32_t                    m_drmFormat     = DRM_FORMAT_INVALID;
     uint32_t                    m_prevDrmFormat = DRM_FORMAT_INVALID;
 
